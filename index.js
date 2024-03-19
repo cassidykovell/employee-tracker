@@ -75,11 +75,15 @@ function viewAllEmployees() {
 }
 
 function viewAllDepartments() {
-
+    db.query("SELECT id AS department_id, dep_name AS department_name FROM department_list;", function(err, res){
+        err? console.log(err): console.table(res), start()
+    })
 }
 
 function viewAllRoles() {
-
+    db.query("SELECT r.id AS role_id,  r.title AS job_title,  r.salary,  d.dep_name AS department_name FROM   role_list r JOIN   department_list d ON r.department_list_id = d.id;", function(err, res){
+        err? console.log(err): console.table(res), start()
+    })
 }
 
 function addADepartment() {
