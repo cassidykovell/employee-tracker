@@ -68,4 +68,39 @@ function start() {
     })
 }
 
+function viewAllEmployees() {
+    db.query("SELECT  e.id AS employee_id,  e.first_name,  e.last_name,  r.title AS job_title,  d.dep_name AS department,  r.salary,  CONCAT(m.first_name, ' ', m.last_name) AS manager_name FROM   employee_list e JOIN   role_list r ON e.role_list_id = r.id JOIN   department_list d ON r.department_list_id = d.id LEFT JOIN   employee_list m ON e.manager_id = m.id;", function(err, res){
+        err? console.log(err): console.table(res), start()
+    })
+}
+
+function viewAllDepartments() {
+
+}
+
+function viewAllRoles() {
+
+}
+
+function addADepartment() {
+
+}
+
+function addARole() {
+
+}
+
+function addAEmployee() {
+
+}
+
+function updateEmployee() {
+
+}
+
+function quit() {
+    console.log("Bye!")
+    process.exit()
+}
+
 start();
