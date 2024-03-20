@@ -87,11 +87,60 @@ function viewAllRoles() {
 }
 
 function addADepartment() {
-
+    inquirer.prompt ([
+        {
+            type: "input",
+            name: "addDepartment",
+            message: "Enter department title"
+        }
+    ]) 
+    .then ((departmentResponse) => {
+        let departmentName = departmentResponse.addDepartment
+        db.query (
+            "INSERT INTO department_list (dep_name) VALUES (?)", [departmentName], function (err, res) {
+                err? console.log(err): viewAllDepartments();
+            }
+        )
+    })
 }
 
 function addARole() {
-
+    db.query("SELECT * FROM department_list", function(err, res){
+        if(err){
+            console.log(err)
+            return start()
+        }
+        const departmentChoice = res.map((department) => ({
+            value: department.id, 
+            name: department.dep_name,
+        }))
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "addRole",
+                message: "Enter a role",
+            },
+            {
+                type: "input",
+                name: "salary",
+                message: "How much do they make?",
+            },
+            {
+                type: "list",
+                name: "departmentId",
+                message: "Which department does this role belong to?",
+                choices: departmentChoice,
+            }
+        ]) 
+        .then ((roleResponse) => {
+            let roleTitle = roleResponse.addRole; 
+            let roleSalary = roleResponse.salary;
+            let departmentId = roleResponse.departmentId;
+            db.query("INSERT INTO role_list (title, salary, department_list_id) VALUES (?, ?, ?)", [roleTitle, roleSalary, departmentId], function (err, res) {
+                err?console.log(err): viewAllRoles()
+            })
+        })
+    })
 }
 
 function addAEmployee() {
