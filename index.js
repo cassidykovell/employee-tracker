@@ -1,8 +1,10 @@
+//requiring all dependencies
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const logo = require("asciiart-logo");
 require("console.table");
 
+//creating a connection the the sql
 const db = mysql.createConnection(
   {
     host: "localhost",
@@ -13,6 +15,7 @@ const db = mysql.createConnection(
   console.log(`Connected to employees_db database.`)
 );
 
+//function for starting the command line tools and provding the main menu for the user to navigate
 function start() {
   const logotext = logo({ name: "employee database" }).render();
   console.log(logotext);
@@ -68,6 +71,7 @@ function start() {
     });
 }
 
+//function to let the user view all employees 
 function viewAllEmployees() {
   db.query(
     "SELECT  e.id AS employee_id,  e.first_name,  e.last_name,  r.title AS job_title,  d.dep_name AS department,  r.salary,  CONCAT(m.first_name, ' ', m.last_name) AS manager_name FROM   employee_list e JOIN   role_list r ON e.role_list_id = r.id JOIN   department_list d ON r.department_list_id = d.id LEFT JOIN   employee_list m ON e.manager_id = m.id;",
@@ -77,6 +81,7 @@ function viewAllEmployees() {
   );
 }
 
+//function to let the user view all departments 
 function viewAllDepartments() {
   db.query(
     "SELECT id AS department_id, dep_name AS department_name FROM department_list;",
@@ -86,6 +91,7 @@ function viewAllDepartments() {
   );
 }
 
+//function to let the user view all roles
 function viewAllRoles() {
   db.query(
     "SELECT r.id AS role_id,  r.title AS job_title,  r.salary,  d.dep_name AS department_name FROM   role_list r JOIN   department_list d ON r.department_list_id = d.id;",
@@ -95,6 +101,7 @@ function viewAllRoles() {
   );
 }
 
+//function to let the user add a department to the database
 function addADepartment() {
   inquirer
     .prompt([
@@ -116,6 +123,7 @@ function addADepartment() {
     });
 }
 
+//function to let the user add a role to the data base
 function addARole() {
   db.query("SELECT * FROM department_list", function (err, res) {
     if (err) {
@@ -160,6 +168,7 @@ function addARole() {
   });
 }
 
+//function to let a user add an employee to the database
 function addAEmployee() {
   db.query("SELECT employee_list.id, employee_list.first_name, employee_list.last_name, role_list.title FROM employee_list JOIN role_list ON employee_list.role_list_id = role_list.id", function (err, res) {
     if (err) {
@@ -223,6 +232,7 @@ function addAEmployee() {
   });
 }
 
+//functio to let a user update an existing employee to the data base
 function updateEmployee() {
   db.query("SELECT * FROM role_list", function (err, roles) {
     if (err) {
@@ -294,6 +304,7 @@ function updateEmployee() {
   });
 }
 
+//function for quiting
 function quit() {
   console.log("Bye!");
   process.exit();
