@@ -20,16 +20,16 @@ INSERT INTO employee_list
 (first_name, last_name, role_list_id, manager_id)
 VALUES
 ("Jamie", "Smith", 1, NULL),
-("Amy", "Blue", 1, NULL),
-("Sarah", "Connor", 1, NULL),
-("Jennifer", "Pierce", 2, NULL),
-("Karen", "Arroyo", 2, NULL),
 ("Jeanne", "Ruby", 2, NULL),
-("Kacey", "Bates", 3, NULL),
 ("Zoe", "Croak", 3, NULL),
-("Mya", "Violet", 3, NULL),
 ("Cassie", "Jones", 4, NULL),
-("Dawn", "Cobbel", 4, NULL),
-("Liz", "Brack", 4, NULL);
+("Amy", "Blue", 1, 1),
+("Sarah", "Connor", 1, 1),
+("Jennifer", "Pierce", 2, 2),
+("Karen", "Arroyo", 2, 2),
+("Kacey", "Bates", 3, 3),
+("Mya", "Violet", 3, 3),
+("Dawn", "Cobbel", 4, 4),
+("Liz", "Brack", 4, 4);
 
 
