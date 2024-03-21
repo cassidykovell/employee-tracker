@@ -26,46 +26,46 @@ function start() {
         name: "openingMessage",
         message: "What would you like to do?",
         choices: [
-          "viewAllEmployees",
-          "viewAllDepartments",
-          "viewAllRoles",
-          "addADepartment",
-          "addARole",
-          "addAEmployee",
-          "updateEmployee",
-          "quit",
+          "View All Employees",
+          "View All Departments",
+          "View All Roles",
+          "Add A Department",
+          "Add A Role",
+          "Add A Employee",
+          "Update Employee",
+          "Quit",
         ],
       },
     ])
     .then((inquirerResponse) => {
       let choice = inquirerResponse.openingMessage;
       switch (choice) {
-        case "viewAllEmployees":
+        case "View All Employees":
           viewAllEmployees();
           break;
-        case "viewAllDepartments":
+        case "View All Departments":
           viewAllDepartments();
           break;
-        case "viewAllRoles":
+        case "View All Roles":
           viewAllRoles();
           break;
-        case "addADepartment":
+        case "Add A Department":
           addADepartment();
           break;
-        case "addARole":
+        case "Add A Role":
           addARole();
           break;
-        case "addAEmployee":
+        case "Add A Employee":
           addAEmployee();
           break;
-        case "updateEmployee":
+        case "Update Employee":
           updateEmployee();
           break;
-        case "quit":
+        case "Quit":
           quit();
           break;
         default:
-          console.log("somethings wrong with you");
+          console.log("Something's Wrong");
           break;
       }
     });
@@ -311,3 +311,6 @@ function quit() {
 }
 
 start();
+
+
+  
