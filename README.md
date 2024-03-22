@@ -17,7 +17,7 @@ In order to install this tool you should clone the repository, then navigate to 
 ## Usage
 To use this application first open an integrated terminal in the db folder and open mysql, then type and enter schema.sql and then seeds.sql and then open another integrted terminal in index.js and type ‘node index’ in the command line and answer the questions prompted to you.
 
-[See video demonstration](https://drive.google.com/file/d/15UgD-mwegYuxsutdEAhkRO-jATaPM-O1/view)
+[See video demonstration](https://drive.google.com/file/d/1LP19XafBXLlj_vdiJMhSldDeEJZyTeLG/view)
 
 ## Credits
 Cassidy Kovell with help from my tutor and the Xpert Learning Assistant.

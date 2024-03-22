@@ -5,20 +5,18 @@ const logo = require("asciiart-logo");
 require("console.table");
 
 //creating a connection the the sql
-const db = mysql.createConnection(
-  {
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "employees_db",
-  },
-  console.log(`Connected to employees_db database.`)
-);
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "employees_db",
+});
+
+const logotext = logo({ name: "employee database" }).render();
+console.log(logotext);
 
 //function for starting the command line tools and provding the main menu for the user to navigate
 function start() {
-  const logotext = logo({ name: "employee database" }).render();
-  console.log(logotext);
   inquirer
     .prompt([
       {
@@ -71,7 +69,7 @@ function start() {
     });
 }
 
-//function to let the user view all employees 
+//function to let the user view all employees
 function viewAllEmployees() {
   db.query(
     "SELECT  e.id AS employee_id,  e.first_name,  e.last_name,  r.title AS job_title,  d.dep_name AS department,  r.salary,  CONCAT(m.first_name, ' ', m.last_name) AS manager_name FROM   employee_list e JOIN   role_list r ON e.role_list_id = r.id JOIN   department_list d ON r.department_list_id = d.id LEFT JOIN   employee_list m ON e.manager_id = m.id;",
@@ -81,7 +79,7 @@ function viewAllEmployees() {
   );
 }
 
-//function to let the user view all departments 
+//function to let the user view all departments
 function viewAllDepartments() {
   db.query(
     "SELECT id AS department_id, dep_name AS department_name FROM department_list;",
@@ -108,7 +106,7 @@ function addADepartment() {
       {
         type: "input",
         name: "addDepartment",
-        message: "Enter department title",
+        message: "Enter department title.",
       },
     ])
     .then((departmentResponse) => {
@@ -139,7 +137,7 @@ function addARole() {
         {
           type: "input",
           name: "addRole",
-          message: "Enter a role",
+          message: "Enter a role.",
         },
         {
           type: "input",
@@ -170,66 +168,69 @@ function addARole() {
 
 //function to let a user add an employee to the database
 function addAEmployee() {
-  db.query("SELECT employee_list.id, employee_list.first_name, employee_list.last_name, role_list.title FROM employee_list JOIN role_list ON employee_list.role_list_id = role_list.id", function (err, res) {
-    if (err) {
-      console.log(err);
-      return start();
-    }
+  db.query(
+    "SELECT employee_list.id, employee_list.first_name, employee_list.last_name, role_list.title FROM employee_list JOIN role_list ON employee_list.role_list_id = role_list.id",
+    function (err, res) {
+      if (err) {
+        console.log(err);
+        return start();
+      }
 
-    const roleChoice = res.map((employee) => ({
-      value: employee.id,
-      name: employee.title,
-    }));
+      const roleChoice = res.map((employee) => ({
+        value: employee.id,
+        name: employee.title,
+      }));
 
-    const managerChoice = res.map((manager) => ({
-      value: manager.id,
-      name: `${manager.first_name} ${manager.last_name}`,
-    }));
+      const managerChoice = res.map((manager) => ({
+        value: manager.id,
+        name: `${manager.first_name} ${manager.last_name}`,
+      }));
 
-    inquirer
-      .prompt([
-        {
-          type: "input",
-          name: "addFirst",
-          message: "Enter the new employee's first name",
-        },
-        {
-          type: "input",
-          name: "addLast",
-          message: "Enter the new employee's last name.",
-        },
-        {
-          type: "list",
-          name: "role",
-          message: "Enter the role of this new employee.",
-          choices: roleChoice,
-        },
-        {
-          type: "list",
-          name: "manager",
-          message: "Enter the manager of the new employee",
-          choices: managerChoice,
-        },
-      ])
-      .then((newEmployee) => {
-        let firstName = newEmployee.addFirst;
-        let lastName = newEmployee.addLast;
-        let role = newEmployee.role;
-        let manager = newEmployee.manager;
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "addFirst",
+            message: "Enter the new employee's first name.",
+          },
+          {
+            type: "input",
+            name: "addLast",
+            message: "Enter the new employee's last name.",
+          },
+          {
+            type: "list",
+            name: "role",
+            message: "Enter the role of this new employee.",
+            choices: roleChoice,
+          },
+          {
+            type: "list",
+            name: "manager",
+            message: "Enter the manager of the new employee.",
+            choices: managerChoice,
+          },
+        ])
+        .then((newEmployee) => {
+          let firstName = newEmployee.addFirst;
+          let lastName = newEmployee.addLast;
+          let role = newEmployee.role;
+          let manager = newEmployee.manager;
 
-        db.query(
-          "INSERT INTO employee_list (first_name, last_name, role_list_id, manager_id) VALUES (?, ?, ?, ?)",
-          [firstName, lastName, role, manager],
-          function (err, res) {
-            if (err) {
-              console.log(err);
-            } else {
-              viewAllEmployees();
+          db.query(
+            "INSERT INTO employee_list (first_name, last_name, role_list_id, manager_id) VALUES (?, ?, ?, ?)",
+            [firstName, lastName, role, manager],
+            function (err, res) {
+              if (err) {
+                console.log(err);
+              } else {
+                viewAllEmployees();
+              }
             }
-          }
-        );
-      });
-  });
+          );
+        });
+    }
+  );
 }
 
 //functio to let a user update an existing employee to the data base
@@ -311,6 +312,3 @@ function quit() {
 }
 
 start();
-
-
-  
